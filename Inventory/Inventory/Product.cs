@@ -9,8 +9,9 @@ namespace Inventory
         public Guid SerialNumber { get; set; }
         public string Description { get; set; }
         public DateTime DateOfBuy { get; set; }
-        public TimeSpan GuarantyMonths { get; set; }
-        public double Price { get; set; }
-        public string Manufacturer { get; set; }
+        public DateTime GuarantyMonths { get; set; }
+        public decimal Price { get; set; }
     }
+
+
 }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Inventory
 {
-    public class Computers: TechEquipment
+    public class Computer : TechEquipment
     {
         public string SystemInfo { get; set; }
         public bool IsLaptop { get; set; }
