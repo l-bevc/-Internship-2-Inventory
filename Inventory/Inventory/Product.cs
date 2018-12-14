@@ -11,6 +11,7 @@ namespace Inventory
         public DateTime DateOfBuy { get; set; }
         public DateTime GuarantyMonths { get; set; }
         public decimal Price { get; set; }
+        public decimal CurrentValue { get; set; }
     }
 
 

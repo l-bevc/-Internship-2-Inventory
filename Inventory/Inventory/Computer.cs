@@ -8,5 +8,6 @@ namespace Inventory
     {
         public string SystemInfo { get; set; }
         public bool IsLaptop { get; set; }
+
     }
 }

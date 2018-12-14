@@ -30,7 +30,7 @@ namespace Inventory
                     Description = "second car",
                     DateOfBuy = new DateTime(2017,11, 05).Date,
                     GuarantyMonths =   new DateTime(2017,10,10).Date,
-                    Price= 50m,
+                    Price= 500090,
                     Manufact = Manufacturer.Bmw,
                     ExpirationTime = new DateTime(2025, 12, 31).Date,
                     Distance = 500000
@@ -75,7 +75,7 @@ namespace Inventory
             {
                 Console.WriteLine("Choose option: \n1-Add, \n2-Delete, \n3-Details on serial number, \n4-Guaranty expire of computers," +
                                   " \n5-How many batteries are in tech equipment, \n6-Phones of entered mark, \n7-Computer with entered system," +
-                                  "\n8-Name and number of those whose garancy expires in input year, \n9-Vehicles which registry expires in a month, \n10-Done");
+                                  "\n8-Name and number of those whose guaranty expires in input year, \n9-Vehicles which registry expires in a month, \n10-Done");
                 var chosen = int.Parse(Console.ReadLine());
                 switch (chosen)
                 {
@@ -179,18 +179,22 @@ namespace Inventory
             Console.WriteLine("Add date of buy: ");
             var dBuy = DateTime.Parse(Console.ReadLine());
             Console.WriteLine("Guaranty duration expires on date: ");
-            var days = new DateTime(long.Parse(Console.ReadLine()));
+            var days = DateTime.Parse(Console.ReadLine());
             Console.WriteLine("Add price: ");
             var price = decimal.Parse(Console.ReadLine());
             Console.WriteLine("Manufacturer 1-Apple, 2-hp, 3-fujitsu");
             var numb = int.Parse(Console.ReadLine());
             var manufac = (ManufacturerComp)numb;
             Console.WriteLine("Has batteries?: ");
-            var battery = bool.Parse(Console.ReadLine());
+            var battery = false;
+            if (Console.ReadLine().ToLower()=="yes" || char.Parse(Console.ReadLine().ToLower())=='y')
+                battery = true;
             Console.WriteLine("Add system info: ");
             var info = Console.ReadLine();
+            var laptop = false;
             Console.WriteLine("Is laptop: ");
-            var laptop = bool.Parse(Console.ReadLine());
+            if (Console.ReadLine().ToLower() == "yes" || char.Parse(Console.ReadLine().ToLower()) == 'y')
+                laptop = true;
             var comp = new Computer()
             {
                 SerialNumber = Guid.NewGuid(),
@@ -219,9 +223,11 @@ namespace Inventory
             var price2 = decimal.Parse(Console.ReadLine());
             Console.WriteLine("Manufacturer 1-Apple, 2-hp, 3-fujitsu");
             var numb2 = int.Parse(Console.ReadLine());
-            var manufac2 = (ManufacturerComp)numb2;
+            var manufac2 = (ManufacturerComp)numb2;      
+            var battery2 = false;
             Console.WriteLine("Has batteries?: ");
-            var battery2 = bool.Parse(Console.ReadLine());
+            if (Console.ReadLine().ToLower() == "yes" || char.Parse(Console.ReadLine().ToLower()) == 'y')
+                battery2 = true;
             Console.WriteLine("Add number: ");
             var numberPhone = Console.ReadLine();
             Console.WriteLine("Name and surname: ");
@@ -324,9 +330,10 @@ namespace Inventory
             {
                 var months = (DateTime.Now-el.DateOfBuy);
                 Console.WriteLine($"COMPUTER\nSerial number: {el.SerialNumber}\nDescription: {el.Description}\nDate of buy:{el.DateOfBuy.Date.ToString("MM/dd/yyyy")}\n" +
-                                  $"Guaranty in: {months.TotalDays}\nPrice: {el.Price}\n" +
+                                  $"Guaranty: {Math.Truncate(months.TotalDays / 30)}\nPrice: {el.Price}\n" +
                                   $"Manufacturer: {el.ManufactComp}\nHas batteries: {el.HasBatteries}\n" +
-                                  $"System info: {el.SystemInfo}\nIs laptop:{el.IsLaptop}");
+                                  $"System info: {el.SystemInfo}\nIs laptop:{el.IsLaptop}\nCurrent value:{el.CurrentValue}\n" +
+                                  $"Difference between price and current value:{el.Price-el.CurrentValue}");
             }
         }
 
@@ -334,11 +341,13 @@ namespace Inventory
         {
             foreach (var el in listPhon)
             {
+                el.Value();
                 var months = (DateTime.Now - el.DateOfBuy).TotalDays ;
                 Console.WriteLine($"PHONE\nSerial number: {el.SerialNumber}\nDescription: {el.Description}\nDate of buy:{el.DateOfBuy.Date.ToString("MM/dd/yyyy")}\n" +
-                                  $"Guaranty in months: {months}\nPrice: {el.Price}\n" +
+                                  $"Guaranty: {Math.Truncate(months / 30)}\nPrice: {el.Price}\n" +
                                   $"Manufacturer: {el.ManufactComp}\nHas batteries: {el.HasBatteries}\n" +
-                                  $"Phone number: {el.PhoneNumber}\nName: {el.NameSurname}");
+                                  $"Phone number: {el.PhoneNumber}\nName: {el.NameSurname}\nCurrent value:{el.CurrentValue}\n" +
+                                  $"Difference between price and current value:{el.Price - el.CurrentValue}");
             }
         }
 
@@ -346,25 +355,28 @@ namespace Inventory
         {
             foreach (var el in listVeh)
             {
+                el.ValueVehicle();
                 var months = (DateTime.Now - el.DateOfBuy).TotalDays;
                 Console.WriteLine($"VEHICLE\nSerial number: {el.SerialNumber}\nDescription: {el.Description}\nDate of buy:{el.DateOfBuy.Date.ToString("MM/dd/yyyy")}\n" +
-                    $"Guaranty in months: {months}\nPrice: {el.Price}\n" +
+                    $"Guaranty: {Math.Truncate(months/30)}\nPrice: {el.Price}\n" +
                     $"Manufacturer: {el.Manufact}\nExpiration time: {el.ExpirationTime.ToString("MM/dd/yyyy")}\n" +
-                                  $"Distance: {el.Distance}km");
+                                  $"Distance: {el.Distance}km\nCurrent value:{el.CurrentValue}\n" +
+                                  $"Difference between price and current value:{el.Price - el.CurrentValue}");
             }
         }
-
+        
         static void DetailsOfComputer(List<Computer>list)
         {
             Console.WriteLine("Add serial number: ");
             var numb = Guid.Parse(Console.ReadLine());
             foreach (var el in list)
             {
+                el.Value();
                 if (numb == el.SerialNumber)
                 {
                     var months = (el.GuarantyMonths - el.DateOfBuy);
                     Console.WriteLine($"COMPUTER\nSerial number: {el.SerialNumber}\nDescription: {el.Description}\nDate of buy:{el.DateOfBuy.Date.ToString("MM/dd/yyyy")}\n" +
-                                      $"Guaranty duration: {months.TotalDays}\nPrice: {el.Price}\n" +
+                                      $"Guaranty duration: {Math.Truncate(months.TotalDays / 30)}\nPrice: {el.Price}\n" +
                                       $"Manufacturer: {el.ManufactComp}\nHas batteries: {el.HasBatteries}\n" +
                                       $"System info: {el.SystemInfo}\nIs laptop:{el.IsLaptop}");
                 }
@@ -377,11 +389,12 @@ namespace Inventory
             var numb = Guid.Parse(Console.ReadLine());
             foreach (var el in list)
             {
+                el.Value();
                 if (numb == el.SerialNumber)
                 {
                     var months = (el.GuarantyMonths- el.DateOfBuy).TotalDays;
                     Console.WriteLine($"PHONE\nSerial number: {el.SerialNumber}\nDescription: {el.Description}\nDate of buy:{el.DateOfBuy.Date.ToString("MM/dd/yyyy")}\n" +
-                                      $"Guaranty duration: {months}\nPrice: {el.Price}\n" +
+                                      $"Guaranty duration: {Math.Truncate(months / 30)}\nPrice: {el.Price}\n" +
                                       $"Manufacturer: {el.ManufactComp}\nHas batteries: {el.HasBatteries}\n" +
                                       $"Phone number: {el.PhoneNumber}\nName: {el.NameSurname}");
                 }
@@ -394,11 +407,12 @@ namespace Inventory
             var numb = Guid.Parse(Console.ReadLine());
             foreach (var el in list)
             {
+                el.ValueVehicle();
                 if (numb == el.SerialNumber)
                 {
                     var months = (el.GuarantyMonths - el.DateOfBuy).TotalDays;
                     Console.WriteLine($"VEHICLE\nSerial number: {el.SerialNumber}\nDescription: {el.Description}\nDate of buy:{el.DateOfBuy.Date.ToString("MM/dd/yyyy")}\n" +
-                                      $"Guaranty duration: {months}\nPrice: {el.Price}\n" +
+                                      $"Guaranty duration: {Math.Truncate(months / 30)}\nPrice: {el.Price}\n" +
                                       $"Manufacturer: {el.Manufact}\nExpiration time: {el.ExpirationTime.ToString("MM/dd/yyyy")}\n" +
                                       $"Distance: {el.Distance}km");
                 }
