@@ -5,11 +5,18 @@ using System.Text;
 
 namespace Inventory
 {
-    public class TechEquipment: Product
+    public class TechEquipment : Product
     {
         public bool HasBatteries { get; set; }
         public ManufacturerComp ManufactComp { get; set; }
 
+
+        public TechEquipment(Guid serialNumber, string description, DateTime dateOfBuy, DateTime guarantyMonths, decimal price,
+            bool hasBatteries, ManufacturerComp manufacturerComp) : base(serialNumber, description, dateOfBuy, guarantyMonths, price)
+        {
+            this.HasBatteries = hasBatteries;
+            this.ManufactComp = manufacturerComp;
+        }
         public void Value()
         {
             var helpCurrent = CurrentValue;
@@ -27,6 +34,22 @@ namespace Inventory
                     break;
                 }
             }
+        }
+
+        public static void NumberOfBatteries(List<Computer> list1, List<Phone> list2)
+        {
+            var numerator = 0;
+            foreach (var el in list1)
+            {
+                if (el.HasBatteries)
+                    numerator++;
+            }
+            foreach (var el in list2)
+            {
+                if (el.HasBatteries)
+                    numerator++;
+            }
+            Console.WriteLine($"There are {numerator} batteries in tech equipment");
         }
     }
 

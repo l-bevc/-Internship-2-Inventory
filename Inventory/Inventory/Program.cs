@@ -10,66 +10,21 @@ namespace Inventory
     {
         static void Main(string[] args)
         {
-            var date1= new DateTime(2018, 12,13);
-            var listOfVehicles = new List<Vehicle>()
-            {
-                new Vehicle()
-                {
-                    SerialNumber = Guid.NewGuid(),
-                    Description = "first car",
-                    DateOfBuy = new DateTime(2016,12, 05).Date,
-                    GuarantyMonths =  new DateTime(2018,10,01).Date,
-                    Price= 50000,
-                    Manufact = Manufacturer.Fiat,
-                    ExpirationTime = new DateTime(2019, 01, 29).Date,
-                    Distance = 100000
-                },
-                new Vehicle()
-                {
-                    SerialNumber = Guid.NewGuid(),
-                    Description = "second car",
-                    DateOfBuy = new DateTime(2017,11, 05).Date,
-                    GuarantyMonths =   new DateTime(2017,10,10).Date,
-                    Price= 500090,
-                    Manufact = Manufacturer.Bmw,
-                    ExpirationTime = new DateTime(2025, 12, 31).Date,
-                    Distance = 500000
-                }
-            };
-            var listOfComputers = new List<Computer>()
-            {
-                new Computer()
-                {
-                    SerialNumber = Guid.NewGuid(),
-                    Description = "first computer",
-                    DateOfBuy = new DateTime(2010,10, 15).Date, 
-                    GuarantyMonths = new DateTime(2015,03,03).Date,
-                    Price= 5000,
-                    ManufactComp = ManufacturerComp.Hp,
-                    HasBatteries = true,
-                    SystemInfo = "windows 10",
-                    IsLaptop = true
-                }
-            };
-            var listOfPhones = new List<Phone>()
-            {
-                new Phone()
-                {
-                    SerialNumber = Guid.NewGuid(),
-                    Description = "first phone",
-                    DateOfBuy = new DateTime(2018,12, 01).Date,
-                    GuarantyMonths =   new DateTime(2020,12,10).Date,
-                    Price= 7000,
-                    ManufactComp = ManufacturerComp.Apple,
-                    HasBatteries = true,
-                    PhoneNumber = "003859967832",
-                    NameSurname = "Laura Bevc"
-                }
-            };
-            Console.WriteLine();
-            PrintComps(listOfComputers);
-            PrintPhone(listOfPhones);
-            PrintVeh(listOfVehicles);
+            var listOfPhones = new List<Phone>();
+            var listOfVehicles = new List<Vehicle>();
+            var listOfComputers = new List<Computer>();
+            var firstComputer = new Computer(Guid.NewGuid(), "First computer", new DateTime(2010, 10, 15).Date,
+                new DateTime(2015, 03, 03).Date, 5000, true, ManufacturerComp.Hp, "windows 10", true);
+            listOfComputers.Add(firstComputer);
+            var firstCar = new Vehicle(Guid.NewGuid(), "First car", new DateTime(2016, 12, 05).Date,
+                new DateTime(2018, 10, 01).Date, 50000, new DateTime(2019, 01, 29).Date, 100000, Manufacturer.Fiat);
+            listOfVehicles.Add(firstCar);
+            var firstPhone = new Phone(Guid.NewGuid(), "First phone", new DateTime(2018, 12, 01).Date,
+                new DateTime(2020, 12, 10).Date, 7000, true, ManufacturerComp.Apple, "003859967832", "Laura Bevc");
+            listOfPhones.Add(firstPhone);
+            Computer.PrintComps(listOfComputers);
+            Vehicle.PrintVeh(listOfVehicles);
+            Phone.PrintPhone(listOfPhones);
             var go = true;
             while (go)
             {
@@ -85,17 +40,13 @@ namespace Inventory
                         switch (chosen2)
                         {
                             case 1:
-                                var comp = AddingComputer();
-                                listOfComputers.Add(comp);
+                                Computer.AddingComputer(listOfComputers);
                                 break;
                             case 2:
-                                var phon = AddingPhone();
-                                listOfPhones.Add(phon);
+                                Phone.AddingPhone(listOfPhones);
                                 break;
-
                             case 3:
-                                var vehicl = AddingVehicle();
-                                listOfVehicles.Add(vehicl);
+                                Vehicle.AddingVehicle(listOfVehicles);
                                 break;
                             default:
                                 Console.WriteLine("You have chosen an option that does not exist!");
@@ -108,14 +59,13 @@ namespace Inventory
                         switch (chosen3)
                         {
                             case 1:
-                                listOfComputers = DeleteComputer(listOfComputers);
+                                listOfComputers = Computer.DeleteComputer(listOfComputers);
                                 break;
                             case 2:
-                                listOfPhones = DeletePhone(listOfPhones);
+                                listOfPhones = Phone.DeletePhone(listOfPhones);
                                 break;
-
                             case 3:
-                                listOfVehicles = DeleteVehicle(listOfVehicles);
+                                listOfVehicles = Vehicle.DeleteVehicle(listOfVehicles);
                                 break;
                             default:
                                 Console.WriteLine("You have chosen an option that does not exist!");
@@ -128,14 +78,14 @@ namespace Inventory
                         switch (chosen4)
                         {
                             case 1:
-                                DetailsOfComputer(listOfComputers);
+                                Computer.DetailsOfComputer(listOfComputers);
                                 break;
                             case 2:
-                                DetailsOfPhone(listOfPhones);
+                                Phone.DetailsOfPhone(listOfPhones);
                                 break;
 
                             case 3:
-                                DetailsOfVehicle(listOfVehicles);
+                                Vehicle.DetailsOfVehicle(listOfVehicles);
                                 break;
                             default:
                                 Console.WriteLine("You have chosen an option that does not exist!");
@@ -143,22 +93,22 @@ namespace Inventory
                         }
                         break;
                     case 4:
-                        ExpireComputers(listOfComputers);
+                        Computer.ExpireComputers(listOfComputers);
                         break;
                     case 5:
-                        NumberOfBatteries(listOfComputers, listOfPhones);
+                        TechEquipment.NumberOfBatteries(listOfComputers, listOfPhones);
                         break;
                     case 6:
-                        PhoneByMark(listOfPhones);
+                        Phone.PhoneByMark(listOfPhones);
                         break;
                     case 7:
-                        ComputerBySystem(listOfComputers);
+                        Computer.ComputerBySystem(listOfComputers);
                         break;
                     case 8:
-                        NameAndNumber(listOfPhones);
+                        Phone.NameAndNumber(listOfPhones);
                         break;
                     case 9:
-                        VehicleExpiresInMonth(listOfVehicles);
+                        Vehicle.VehicleExpiresInMonth(listOfVehicles);
                         break;
                     case 10:
                         go = false;
@@ -167,334 +117,6 @@ namespace Inventory
                         go = true;
                         break;
                 }
-            }
-        }
-
-        static Computer AddingComputer()
-        {
-            
-            Console.WriteLine("Add new computer: ");
-            Console.WriteLine("Add description: ");
-            var descrip = Console.ReadLine();
-            Console.WriteLine("Add date of buy: ");
-            var dBuy = DateTime.Parse(Console.ReadLine());
-            Console.WriteLine("Guaranty duration expires on date: ");
-            var days = DateTime.Parse(Console.ReadLine());
-            Console.WriteLine("Add price: ");
-            var price = decimal.Parse(Console.ReadLine());
-            Console.WriteLine("Manufacturer 1-Apple, 2-hp, 3-fujitsu");
-            var numb = int.Parse(Console.ReadLine());
-            var manufac = (ManufacturerComp)numb;
-            Console.WriteLine("Has batteries?: ");
-            var battery = false;
-            if (Console.ReadLine().ToLower()=="yes" || char.Parse(Console.ReadLine().ToLower())=='y')
-                battery = true;
-            Console.WriteLine("Add system info: ");
-            var info = Console.ReadLine();
-            var laptop = false;
-            Console.WriteLine("Is laptop: ");
-            if (Console.ReadLine().ToLower() == "yes" || char.Parse(Console.ReadLine().ToLower()) == 'y')
-                laptop = true;
-            var comp = new Computer()
-            {
-                SerialNumber = Guid.NewGuid(),
-                Description = descrip,
-                DateOfBuy = dBuy,
-                GuarantyMonths = days,
-                Price = price,
-                ManufactComp = manufac,
-                HasBatteries = battery,
-                SystemInfo = info,
-                IsLaptop = laptop
-            };
-            return comp;
-        }
-
-        static Phone AddingPhone()
-        {
-            Console.WriteLine("Add new phone: ");
-            Console.WriteLine("Add description: ");
-            var descrip2 = Console.ReadLine();
-            Console.WriteLine("Add date of buy: ");
-            var dBuy2 = DateTime.Parse(Console.ReadLine());
-            Console.WriteLine("Guaranty duration in days: ");
-            Console.WriteLine("Guaranty duration expires on date: ");
-            var days2 = DateTime.Parse(Console.ReadLine());
-            var price2 = decimal.Parse(Console.ReadLine());
-            Console.WriteLine("Manufacturer 1-Apple, 2-hp, 3-fujitsu");
-            var numb2 = int.Parse(Console.ReadLine());
-            var manufac2 = (ManufacturerComp)numb2;      
-            var battery2 = false;
-            Console.WriteLine("Has batteries?: ");
-            if (Console.ReadLine().ToLower() == "yes" || char.Parse(Console.ReadLine().ToLower()) == 'y')
-                battery2 = true;
-            Console.WriteLine("Add number: ");
-            var numberPhone = Console.ReadLine();
-            Console.WriteLine("Name and surname: ");
-            var name = Console.ReadLine();
-            var phon = new Phone()
-            {
-                SerialNumber = Guid.NewGuid(),
-                Description = descrip2,
-                DateOfBuy = dBuy2,
-                GuarantyMonths = days2,
-                Price = price2,
-                ManufactComp = manufac2,
-                HasBatteries = battery2,
-                PhoneNumber = numberPhone,
-                NameSurname = name
-            };
-            return phon;
-        }
-
-        static Vehicle AddingVehicle()
-        {
-            Console.WriteLine("Add new vehicle: ");
-            Console.WriteLine("Add description: ");
-            var descrip3 = Console.ReadLine();
-            Console.WriteLine("Add date of buy: ");
-            var dBuy3 = DateTime.Parse(Console.ReadLine());
-            Console.WriteLine("Guaranty duration expires on date: ");
-            var days3 = DateTime.Parse(Console.ReadLine());
-            Console.WriteLine("Add price: ");
-            var price3 = decimal.Parse(Console.ReadLine());
-            Console.WriteLine("Manufacturer 1-Toyota, 2-Bmw, 3-Mercedes, 4-Opel, 5-Fiat");
-            var numb3 = int.Parse(Console.ReadLine());
-            var manufac3 = (Manufacturer)numb3;
-            Console.WriteLine("Date expiration registry?: ");
-            var expiration = DateTime.Parse(Console.ReadLine());
-            Console.WriteLine("Kilometers: ");
-            var km = decimal.Parse(Console.ReadLine());
-            var vehicl = new Vehicle()
-            {
-                SerialNumber = Guid.NewGuid(),
-                Description = descrip3,
-                DateOfBuy = dBuy3,
-                GuarantyMonths = days3,
-                Price = price3,
-                Manufact = manufac3,
-                ExpirationTime = expiration,
-                Distance = km
-            };
-            return vehicl;
-        }
-
-        static List<Computer> DeleteComputer(List<Computer> list)
-        {
-            Console.WriteLine("Add a serial number of computer which you want delete:");
-            var compNumber = Guid.Parse(Console.ReadLine());
-            foreach (var comp in list)
-            {
-                if (compNumber == comp.SerialNumber)
-                {
-                    list.Remove(comp);
-                }
-            }
-
-            return list;
-        }
-
-        static List<Phone> DeletePhone(List<Phone> list)
-        {
-            Console.WriteLine("Add a serial number of phone which you want delete:");
-            var phoneNumber = Guid.Parse(Console.ReadLine());
-            foreach (var phone in list)
-            {
-                if (phoneNumber == phone.SerialNumber)
-                {
-                    list.Remove(phone);
-                }
-            }
-
-            return list;
-        }
-
-        static List<Vehicle> DeleteVehicle(List<Vehicle> list)
-        {
-            Console.WriteLine("Add a serial number of vehicle which you want delete:");
-            var vehNumber = Guid.Parse(Console.ReadLine());
-            foreach (var veh in list)
-            {
-                if (vehNumber == veh.SerialNumber)
-                {
-                    list.Remove(veh);
-                }
-            }
-
-            return list;
-        }
-
-        static void PrintComps(List<Computer>listComp)
-        {   
-            foreach (var el in listComp)
-            {
-                var months = (DateTime.Now-el.DateOfBuy);
-                Console.WriteLine($"COMPUTER\nSerial number: {el.SerialNumber}\nDescription: {el.Description}\nDate of buy:{el.DateOfBuy.Date.ToString("MM/dd/yyyy")}\n" +
-                                  $"Guaranty: {Math.Truncate(months.TotalDays / 30)}\nPrice: {el.Price}\n" +
-                                  $"Manufacturer: {el.ManufactComp}\nHas batteries: {el.HasBatteries}\n" +
-                                  $"System info: {el.SystemInfo}\nIs laptop:{el.IsLaptop}\nCurrent value:{el.CurrentValue}\n" +
-                                  $"Difference between price and current value:{el.Price-el.CurrentValue}");
-            }
-        }
-
-        static void PrintPhone(List<Phone> listPhon)
-        {
-            foreach (var el in listPhon)
-            {
-                el.Value();
-                var months = (DateTime.Now - el.DateOfBuy).TotalDays ;
-                Console.WriteLine($"PHONE\nSerial number: {el.SerialNumber}\nDescription: {el.Description}\nDate of buy:{el.DateOfBuy.Date.ToString("MM/dd/yyyy")}\n" +
-                                  $"Guaranty: {Math.Truncate(months / 30)}\nPrice: {el.Price}\n" +
-                                  $"Manufacturer: {el.ManufactComp}\nHas batteries: {el.HasBatteries}\n" +
-                                  $"Phone number: {el.PhoneNumber}\nName: {el.NameSurname}\nCurrent value:{el.CurrentValue}\n" +
-                                  $"Difference between price and current value:{el.Price - el.CurrentValue}");
-            }
-        }
-
-        static void PrintVeh(List<Vehicle> listVeh)
-        {
-            foreach (var el in listVeh)
-            {
-                el.ValueVehicle();
-                var months = (DateTime.Now - el.DateOfBuy).TotalDays;
-                Console.WriteLine($"VEHICLE\nSerial number: {el.SerialNumber}\nDescription: {el.Description}\nDate of buy:{el.DateOfBuy.Date.ToString("MM/dd/yyyy")}\n" +
-                    $"Guaranty: {Math.Truncate(months/30)}\nPrice: {el.Price}\n" +
-                    $"Manufacturer: {el.Manufact}\nExpiration time: {el.ExpirationTime.ToString("MM/dd/yyyy")}\n" +
-                                  $"Distance: {el.Distance}km\nCurrent value:{el.CurrentValue}\n" +
-                                  $"Difference between price and current value:{el.Price - el.CurrentValue}");
-            }
-        }
-        
-        static void DetailsOfComputer(List<Computer>list)
-        {
-            Console.WriteLine("Add serial number: ");
-            var numb = Guid.Parse(Console.ReadLine());
-            foreach (var el in list)
-            {
-                el.Value();
-                if (numb == el.SerialNumber)
-                {
-                    var months = (el.GuarantyMonths - el.DateOfBuy);
-                    Console.WriteLine($"COMPUTER\nSerial number: {el.SerialNumber}\nDescription: {el.Description}\nDate of buy:{el.DateOfBuy.Date.ToString("MM/dd/yyyy")}\n" +
-                                      $"Guaranty duration: {Math.Truncate(months.TotalDays / 30)}\nPrice: {el.Price}\n" +
-                                      $"Manufacturer: {el.ManufactComp}\nHas batteries: {el.HasBatteries}\n" +
-                                      $"System info: {el.SystemInfo}\nIs laptop:{el.IsLaptop}");
-                }
-            }
-        }
-
-        static void DetailsOfPhone(List<Phone> list)
-        {
-            Console.WriteLine("Add serial number: ");
-            var numb = Guid.Parse(Console.ReadLine());
-            foreach (var el in list)
-            {
-                el.Value();
-                if (numb == el.SerialNumber)
-                {
-                    var months = (el.GuarantyMonths- el.DateOfBuy).TotalDays;
-                    Console.WriteLine($"PHONE\nSerial number: {el.SerialNumber}\nDescription: {el.Description}\nDate of buy:{el.DateOfBuy.Date.ToString("MM/dd/yyyy")}\n" +
-                                      $"Guaranty duration: {Math.Truncate(months / 30)}\nPrice: {el.Price}\n" +
-                                      $"Manufacturer: {el.ManufactComp}\nHas batteries: {el.HasBatteries}\n" +
-                                      $"Phone number: {el.PhoneNumber}\nName: {el.NameSurname}");
-                }
-            }
-        }
-
-        static void DetailsOfVehicle(List<Vehicle> list)
-        {
-            Console.WriteLine("Add serial number: ");
-            var numb = Guid.Parse(Console.ReadLine());
-            foreach (var el in list)
-            {
-                el.ValueVehicle();
-                if (numb == el.SerialNumber)
-                {
-                    var months = (el.GuarantyMonths - el.DateOfBuy).TotalDays;
-                    Console.WriteLine($"VEHICLE\nSerial number: {el.SerialNumber}\nDescription: {el.Description}\nDate of buy:{el.DateOfBuy.Date.ToString("MM/dd/yyyy")}\n" +
-                                      $"Guaranty duration: {Math.Truncate(months / 30)}\nPrice: {el.Price}\n" +
-                                      $"Manufacturer: {el.Manufact}\nExpiration time: {el.ExpirationTime.ToString("MM/dd/yyyy")}\n" +
-                                      $"Distance: {el.Distance}km");
-                }
-            }
-        }
-
-        static void ExpireComputers(List<Computer> list)
-        {
-            Console.WriteLine("Add a year: ");
-            var year = Console.ReadLine();
-            foreach (var el in list)
-            {
-                if (el.GuarantyMonths.Date.Year.ToString() == year.ToString())
-                {
-                    Console.WriteLine(el.SerialNumber+"\n"+el.Description);
-                }
-            }
-        }
-
-        static void NumberOfBatteries(List<Computer> list1, List<Phone> list2)
-        {
-            var numerator = 0;
-            foreach (var el in list1)
-            {
-                if (el.HasBatteries)
-                    numerator++;
-            }
-            foreach (var el in list2)
-            {
-                if (el.HasBatteries)
-                    numerator++;
-            }
-            Console.WriteLine($"There are {numerator} batteries in tech equipment");
-        }
-
-        static void PhoneByMark(List<Phone> list)
-        {
-            Console.WriteLine("Add mark: ");
-            var mark = Console.ReadLine();
-            var first = char.Parse(mark[0].ToString().ToUpper());
-            var end = mark.Remove(1);
-            mark = first + end;
-            foreach (var el in list)
-            {
-                if (el.ManufactComp.ToString() == mark)
-                {
-                    Console.WriteLine(el.PhoneNumber);
-                }
-            }
-        }
-
-        static void ComputerBySystem(List<Computer> list)
-        {
-            Console.WriteLine("Add system: ");
-            var system = Console.ReadLine().ToLower();
-            foreach (var el in list)
-            {
-                if (el.SystemInfo.ToLower()==system)
-                {
-                    Console.WriteLine(el.SerialNumber+" "+el.Description);
-                }
-            }
-
-        }
-
-        static void NameAndNumber(List<Phone> list)
-        {
-            Console.WriteLine("Add a year: ");
-            var year = Console.ReadLine();
-            foreach (var phone in list)
-            {
-                if(phone.GuarantyMonths.Date.Year.ToString()==year)
-                    Console.WriteLine(phone.NameSurname+" "+phone.PhoneNumber);
-            }
-        }
-
-        static void VehicleExpiresInMonth(List<Vehicle> list)
-        {
-            foreach (var el in list)
-            {
-                if(el.ExpirationTime.Year==DateTime.Now.Year && (el.ExpirationTime.Month==DateTime.Now.Month || el.ExpirationTime.Month == DateTime.Now.Month+1))
-                    Console.WriteLine(el.SerialNumber+ " "+el.Description);
             }
         }
     }
